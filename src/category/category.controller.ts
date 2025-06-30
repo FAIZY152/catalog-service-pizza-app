@@ -9,7 +9,9 @@ export class CategoryController {
     constructor(
         private categoryService: CategoryService,
         private logger: Logger,
-    ) {}
+    ) {
+        this.create = this.create.bind(this);
+    }
 
     async create(req: Request, res: Response, next: NextFunction) {
         try {
@@ -22,7 +24,7 @@ export class CategoryController {
             const { name, priceConfiguration, attributes } =
                 req.body as Category;
 
-            const category = this.categoryService.create({
+            const category = await this.categoryService.create({
                 name,
                 priceConfiguration,
                 attributes,
@@ -30,9 +32,11 @@ export class CategoryController {
 
             res.json({
                 message: "Category created successfully",
-                category,
+                id: category._id,
             });
-        } catch (error) {}
-        res.json({ message: "create category" });
+            this.logger.info("Category created successfully");
+        } catch (error) {
+            next(error);
+        }
     }
 }

@@ -4,15 +4,15 @@ import createCategoryValidation from "./category-validator";
 import { CategoryService } from "./category.service";
 import logger from "../config/logger";
 
-const router = express.Router();
+const categoryRouter = express.categoryRouter();
 
 const categoryService = new CategoryService();
 const categoryControll = new CategoryController(categoryService, logger);
 
-router.get("/", (res: Response) => {
+categoryRouter.get("/", (res: Response) => {
     res.send("Hello World");
 });
 
-router.post("/create", createCategoryValidation, categoryControll.create);
+categoryRouter.post("/create", createCategoryValidation, categoryControll.create);
 
-export default router;
+export default categoryRouter;

@@ -17,3 +17,6 @@ export interface Category {
     priceConfiguration: PriceConfiguration;
     attributes: Attribute[];
 }
+
+
+
