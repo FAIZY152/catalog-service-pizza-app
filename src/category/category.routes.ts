@@ -1,5 +1,6 @@
 import express, { Response } from "express";
 import { CategoryController } from "./category.controller";
+import createCategoryValidation from "./category-validator";
 
 const router = express.Router();
 
@@ -9,6 +10,6 @@ router.get("/", (res: Response) => {
     res.send("Hello World");
 });
 
-router.post('/create' , categoryControll.create)
+router.post("/create", createCategoryValidation, categoryControll.create);
 
 export default router;
