@@ -44,4 +44,11 @@ router.delete(
     canAccess([Roles.ADMIN]),
     AsyncHandler(categoryControll.deleteCategory),
 );
+router.patch(
+    "/:id",
+    Authenticate,
+    canAccess([Roles.ADMIN]),
+    createCategoryValidation,
+    AsyncHandler(categoryControll.update),
+);
 export default router;

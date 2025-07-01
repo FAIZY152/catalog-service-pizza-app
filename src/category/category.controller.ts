@@ -13,6 +13,9 @@ export class CategoryController {
     ) {
         this.create = this.create.bind(this);
         this.getAll = this.getAll.bind(this);
+        this.getOne = this.getOne.bind(this);
+        this.deleteCategory = this.deleteCategory.bind(this);
+        this.update = this.update.bind(this);
     }
 
     async create(req: Request, res: Response, next: NextFunction) {
@@ -51,5 +54,30 @@ export class CategoryController {
         return res.json({
             message: "Category deleted successfully",
         });
+    }
+
+    async update(req: Request, res: Response, next: NextFunction) {
+        const result = validationResult(req);
+        if (!result.isEmpty()) {
+            return next(createHttpError(400, result.array()[0].msg as string));
+        }
+        const { id } = req.params;
+        const { name, priceConfiguration, attributes } = req.body as Category;
+
+        const update = await categoryModel.findByIdAndUpdate(
+            {
+                _id: id,
+            },
+            {
+                name: name,
+                priceConfiguration: priceConfiguration,
+                attributes: attributes,
+            },
+        );
+        res.json({
+            message: "Category updated successfully",
+            data: update,
+        });
+        this.logger.info("Category updated successfully");
     }
 }
