@@ -4,6 +4,7 @@ import createHttpError from "http-errors";
 import { CategoryService } from "./category.service";
 import { Logger } from "winston";
 import { Category } from "../types";
+import categoryModel from "./category.model";
 
 export class CategoryController {
     constructor(
@@ -11,6 +12,7 @@ export class CategoryController {
         private logger: Logger,
     ) {
         this.create = this.create.bind(this);
+        this.getAll = this.getAll.bind(this);
     }
 
     async create(req: Request, res: Response, next: NextFunction) {
@@ -31,5 +33,16 @@ export class CategoryController {
             id: category._id,
         });
         this.logger.info("Category created successfully");
+    }
+    async getAll(req: Request, res: Response) {
+        const categories = await categoryModel.find();
+        this.logger.info("All categories fetched successfully");
+
+        return res.json(categories);
+    }
+    async getOne(req: Request, res: Response) {
+        const { id } = req.params;
+        const categorie = await categoryModel.findById(id);
+        return res.json(categorie);
     }
 }

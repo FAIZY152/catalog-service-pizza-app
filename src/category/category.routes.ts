@@ -26,4 +26,10 @@ router.post(
     AsyncHandler(categoryControll.create),
 );
 
+router.get(
+    "/all",
+    Authenticate,
+    canAccess([Roles.ADMIN]),
+    AsyncHandler(categoryControll.getAll),
+);
 export default router;
