@@ -4,6 +4,7 @@ import createCategoryValidation from "./category-validator";
 import { CategoryService } from "./category.service";
 import logger from "../config/logger";
 import AsyncHandler from "../utils/AsyncWrapper";
+import Authenticate from "../common/middlewares/Authenticate";
 
 const router = express.Router();
 
@@ -16,6 +17,8 @@ router.get("/", (res: Response) => {
 
 router.post(
     "/create",
+
+    Authenticate,
     createCategoryValidation,
     AsyncHandler(categoryControll.create),
 );

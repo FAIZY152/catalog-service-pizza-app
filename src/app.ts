@@ -2,9 +2,11 @@ import express, { Request, Response } from "express";
 import config from "config";
 import { globalErrorHandler } from "./common/middlewares/globalErrorHandler";
 import categoryRouter from "./category/category.routes";
+import cookiePrser from "cookie-parser";
 
 const app = express();
 app.use(express.json());
+app.use(cookiePrser());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req: Request, res: Response) => {
