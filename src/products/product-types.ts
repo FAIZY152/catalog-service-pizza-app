@@ -1,3 +1,4 @@
+import { Request } from "express";
 import mongoose from "mongoose";
 
 export interface Product {
@@ -9,6 +10,7 @@ export interface Product {
     attributes: string;
     categoryId: string;
     image: string;
+    isPublish?: boolean;
 }
 
 export interface Filter {
@@ -27,3 +29,8 @@ export enum ProductEvents {
     PRODUCT_UPDATE = "PRODUCT_UPDATE",
     PRODUCT_DELETE = "PRODUCT_DELETE",
 }
+
+export interface productrequest extends Request {
+    body: Product;
+}
+
