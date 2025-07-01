@@ -45,4 +45,11 @@ export class CategoryController {
         const categorie = await categoryModel.findById(id);
         return res.json(categorie);
     }
+    async deleteCategory(req: Request, res: Response) {
+        const { id } = req.params;
+        await categoryModel.findByIdAndDelete(id);
+        return res.json({
+            message: "Category deleted successfully",
+        });
+    }
 }

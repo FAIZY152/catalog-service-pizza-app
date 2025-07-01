@@ -32,4 +32,16 @@ router.get(
     canAccess([Roles.ADMIN]),
     AsyncHandler(categoryControll.getAll),
 );
+router.get(
+    "/:id",
+    Authenticate,
+    canAccess([Roles.ADMIN]),
+    AsyncHandler(categoryControll.getOne),
+);
+router.delete(
+    "/:id",
+    Authenticate,
+    canAccess([Roles.ADMIN]),
+    AsyncHandler(categoryControll.deleteCategory),
+);
 export default router;
