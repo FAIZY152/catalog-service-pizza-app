@@ -14,29 +14,22 @@ export class CategoryController {
     }
 
     async create(req: Request, res: Response, next: NextFunction) {
-        try {
-            const result = validationResult(req);
-            if (!result.isEmpty()) {
-                return next(
-                    createHttpError(400, result.array()[0].msg as string),
-                );
-            }
-            const { name, priceConfiguration, attributes } =
-                req.body as Category;
-
-            const category = await this.categoryService.create({
-                name,
-                priceConfiguration,
-                attributes,
-            });
-
-            res.json({
-                message: "Category created successfully",
-                id: category._id,
-            });
-            this.logger.info("Category created successfully");
-        } catch (error) {
-            next(error);
+        const result = validationResult(req);
+        if (!result.isEmpty()) {
+            return next(createHttpError(400, result.array()[0].msg as string));
         }
+        const { name, priceConfiguration, attributes } = req.body as Category;
+
+        const category = await this.categoryService.create({
+            name,
+            priceConfiguration,
+            attributes,
+        });
+
+        res.json({
+            message: "Category created successfully",
+            id: category._id,
+        });
+        this.logger.info("Category created successfully");
     }
 }
