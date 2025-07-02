@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import { ProductService } from "./product.service";
 import { validationResult } from "express-validator";
 import createHttpError from "http-errors";
@@ -12,7 +12,6 @@ export class ProductController {
         if (!result.isEmpty()) {
             return next(createHttpError(400, result.array()[0].msg as string));
         }
-
         const {
             name,
             description,
@@ -24,10 +23,17 @@ export class ProductController {
         const product = {
             name,
             description,
-            priceConfiguration: JSON.parse(priceConfiguration as string),
-            attributes: JSON.parse(attributes as string),
-
+            priceConfiguration, // pass as string
+            attributes: JSON.parse(attributes) as Record<string, unknown>,
             categoryId,
+            image: req.body.image, // Make sure to provide image in the request body
         };
+        const newProduct = await this.productService.createProduct(
+            product as unknown as Product,
+        );
+        res.json({
+            message: "Product created successfully",
+            id: newProduct._id,
+        });
     };
 }

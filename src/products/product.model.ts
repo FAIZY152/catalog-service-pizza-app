@@ -54,8 +54,12 @@ const productSchema = new mongoose.Schema(
     { timestamps: true },
 );
 
-productSchema.plugin(aggregatePaginate);
-export default mongoose.model<Product, AggregatePaginateModel<Product>>(
-    "Product",
-    productSchema,
-);
+// productSchema.plugin(aggregatePaginate);
+// export default mongoose.model<Product, AggregatePaginateModel<Product>>(
+//     "Product",
+//     productSchema,
+// );
+
+const productModel = mongoose.model<Product>("Product", productSchema);
+
+export default productModel;
