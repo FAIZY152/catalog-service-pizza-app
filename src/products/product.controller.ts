@@ -28,7 +28,6 @@ export class ProductController {
         // file upload
         const file = req.file;
         const imageUrl = await CloudinaryImage(file as Express.Multer.File);
-
         const product = {
             name,
             description,
