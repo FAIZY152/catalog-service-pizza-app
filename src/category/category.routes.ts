@@ -19,7 +19,6 @@ router.get("/", (res: Response) => {
 
 router.post(
     "/create",
-
     Authenticate,
     canAccess([Roles.ADMIN]),
     createCategoryValidation,

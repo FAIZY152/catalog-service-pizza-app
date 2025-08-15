@@ -54,6 +54,7 @@ export class CategoryController {
         return res.json({
             message: "Category deleted successfully",
         });
+        this.logger.info("Category deleted successfully");
     }
 
     async update(req: Request, res: Response, next: NextFunction) {
