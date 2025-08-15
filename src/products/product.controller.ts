@@ -4,9 +4,13 @@ import { validationResult } from "express-validator";
 import createHttpError from "http-errors";
 import { Product, productrequest } from "./product-types";
 import CloudinaryImage from "../common/ImageUploader";
+import { Logger } from "winston";
 
 export class ProductController {
-    constructor(private productService: ProductService) {}
+    constructor(
+        private productService: ProductService,
+        private logger: Logger,
+    ) {}
 
     create = async (req: productrequest, res: Response, next: NextFunction) => {
         const result = validationResult(req);

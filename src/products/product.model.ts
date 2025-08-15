@@ -1,5 +1,4 @@
-import mongoose, { AggregatePaginateModel } from "mongoose";
-import aggregatePaginate from "mongoose-aggregate-paginate-v2";
+import mongoose from "mongoose";
 import { Product } from "./product-types";
 
 const attributeValueSchema = new mongoose.Schema({
