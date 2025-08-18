@@ -17,32 +17,49 @@ export class ProductController {
         if (!result.isEmpty()) {
             return next(createHttpError(400, result.array()[0].msg as string));
         }
-        const {
-            name,
-            description,
-            priceConfiguration,
-            attributes,
-            categoryId,
-        } = req.body;
 
-        // file upload
-        const file = req.file;
-        const imageUrl = await CloudinaryImage(file as Express.Multer.File);
-        const product = {
-            name,
-            description,
-            priceConfiguration, // pass as string
-            attributes: JSON.parse(attributes) as Record<string, unknown>,
-            categoryId,
-            file: imageUrl,
-            // Make sure to provide image in the request body
-        };
-        const newProduct = await this.productService.createProduct(
-            product as unknown as Product,
-        );
-        res.json({
-            message: "Product created successfully",
-            id: newProduct._id,
-        });
+        try {
+            const {
+                name,
+                description,
+                priceConfiguration,
+                attributes,
+                categoryId,
+                isPublish,
+            } = req.body;
+
+            // file upload (Cloudinary or multer)
+            const file = req.file;
+            const imageUrl = await CloudinaryImage(file as Express.Multer.File);
+
+            const product = {
+                name,
+                description,
+                // 👇 Parse JSON string into object so Mongoose Map works
+                priceConfiguration: JSON.parse(priceConfiguration) as Record<
+                    string,
+                    unknown
+                >,
+                // 👇 Parse JSON string into array of attributes
+                attributes: JSON.parse(attributes) as Record<string, unknown>[],
+                categoryId,
+                image: imageUrl, // 👈 fix key name
+                isPublish: isPublish, // optional if you send as text
+            };
+
+            const newProduct = await this.productService.createProduct(
+                product as unknown as Product,
+            );
+
+            res.status(201).json({
+                message: "Product created successfully",
+                id: newProduct._id,
+            });
+        } catch (err: any) {
+            if (err instanceof Error) {
+                this.logger.error(err.message);
+                next(createHttpError(500, err.message));
+            }
+        }
     };
 }

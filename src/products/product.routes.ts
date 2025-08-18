@@ -1,4 +1,4 @@
-import express, { Response , Request } from "express";
+import express, { Response, Request } from "express";
 import logger from "../config/logger";
 import AsyncHandler from "../utils/AsyncWrapper";
 import Authenticate from "../common/middlewares/Authenticate";
@@ -13,9 +13,7 @@ const router = express.Router();
 const productService = new ProductService();
 const productControll = new ProductController(productService, logger);
 
-
-
-router.get("/", (req:Request, res: Response) => {
+router.get("/", (req: Request, res: Response) => {
     return res.json({});
 });
 
