@@ -10,6 +10,7 @@ export interface Product {
     attributes: string;
     categoryId: string;
     image: string;
+    tenantId?: string | number;
     isPublish?: boolean;
 }
 

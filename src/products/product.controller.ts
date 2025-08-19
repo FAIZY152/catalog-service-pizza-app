@@ -26,6 +26,7 @@ export class ProductController {
                 attributes,
                 categoryId,
                 isPublish,
+                tenantId,
             } = req.body;
 
             // file upload (Cloudinary or multer)
@@ -41,6 +42,7 @@ export class ProductController {
                 >,
                 attributes: JSON.parse(attributes) as Record<string, unknown>[],
                 categoryId,
+                tenantId,
                 image: imageUrl, // 👈 fix key name
                 isPublish: isPublish, // optional if you send as text
             };
