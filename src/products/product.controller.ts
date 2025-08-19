@@ -35,12 +35,10 @@ export class ProductController {
             const product = {
                 name,
                 description,
-                // 👇 Parse JSON string into object so Mongoose Map works
                 priceConfiguration: JSON.parse(priceConfiguration) as Record<
                     string,
                     unknown
                 >,
-                // 👇 Parse JSON string into array of attributes
                 attributes: JSON.parse(attributes) as Record<string, unknown>[],
                 categoryId,
                 image: imageUrl, // 👈 fix key name
