@@ -47,13 +47,9 @@ export class ProductController {
                 image: imageUrl, // 👈 fix key name
                 isPublish: isPublish, // optional if you send as text
             };
-            const tenate = (req as AuthRequest).auth;
-            console.log("tenate", tenate);
-
             const newProduct = await this.productService.createProduct(
                 product as unknown as Product,
             );
-
             res.status(201).json({
                 message: "Product created successfully",
                 id: newProduct._id,
