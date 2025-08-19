@@ -5,6 +5,7 @@ import createHttpError from "http-errors";
 import { Product, productrequest } from "./product-types";
 import CloudinaryImage from "../common/ImageUploader";
 import { Logger } from "winston";
+import { AuthRequest } from "../types";
 
 export class ProductController {
     constructor(
@@ -46,6 +47,8 @@ export class ProductController {
                 image: imageUrl, // 👈 fix key name
                 isPublish: isPublish, // optional if you send as text
             };
+            const tenate = (req as AuthRequest).auth;
+            console.log("tenate", tenate);
 
             const newProduct = await this.productService.createProduct(
                 product as unknown as Product,
@@ -102,6 +105,9 @@ export class ProductController {
                 image: imageUrl, // 👈 fix key name
                 isPublish: isPublish, // optional if you send as text
             };
+
+            const tenate = (req as AuthRequest).auth;
+            console.log("tenate", tenate);
 
             const result = await this.productService.updateProduct(
                 productId,
