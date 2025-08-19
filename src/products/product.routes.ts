@@ -7,6 +7,10 @@ import { Roles } from "../utils/constants";
 import { ProductService } from "./product.service";
 import { ProductController } from "./product.controller";
 import upload from "../common/multerUpload";
+import {
+    createProductValidation,
+    updateProductValidation,
+} from "./product-validator";
 
 const router = express.Router();
 
@@ -22,7 +26,17 @@ router.post(
     Authenticate,
     canAccess([Roles.ADMIN]),
     upload.single("image"),
+    createProductValidation,
     AsyncHandler(productControll.create),
+);
+
+router.put(
+    "/:productId",
+    Authenticate,
+    canAccess([Roles.ADMIN, Roles.MANAGER]),
+    upload.single("image"),
+    updateProductValidation,
+    AsyncHandler(productControll.update),
 );
 
 export default router;
