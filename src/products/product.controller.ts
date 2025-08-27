@@ -2,9 +2,10 @@ import { NextFunction, Request, Response } from "express";
 import { ProductService } from "./product.service";
 import { validationResult } from "express-validator";
 import createHttpError from "http-errors";
-import { Product, productrequest } from "./product-types";
+import { Filter, Product, productrequest } from "./product-types";
 import CloudinaryImage from "../common/ImageUploader";
 import { Logger } from "winston";
+import mongoose from "mongoose";
 
 export class ProductController {
     constructor(
@@ -119,13 +120,22 @@ export class ProductController {
     };
     list = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { q, categoryId } = req.query;
+            const { q, name, categoryId } = req.query;
 
-            const filter = {};
+            const filter: Filter = {};
+            const searchTerm = (q || name) as string;
 
-            res.json({});
-            // const products = await this.productService.listProducts();
-            // res.json(products);
+            if (categoryId && mongoose.isValidObjectId(categoryId as string))
+                filter.categoryId = new mongoose.Types.ObjectId(
+                    categoryId as string,
+                );
+            const products = await this.productService.listProducts(
+                searchTerm,
+                filter,
+            );
+            return res.json({
+                products: products,
+            });
         } catch (err: any) {
             if (err instanceof Error) {
                 this.logger.error(err.message);

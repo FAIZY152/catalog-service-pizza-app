@@ -15,9 +15,8 @@ export interface Product {
 }
 
 export interface Filter {
-    tenantId?: string;
+    q?: string;
     categoryId?: mongoose.Types.ObjectId;
-    isPublish?: boolean;
 }
 
 export interface PaginateQuery {
@@ -34,4 +33,3 @@ export enum ProductEvents {
 export interface productrequest extends Request {
     body: Product;
 }
-
