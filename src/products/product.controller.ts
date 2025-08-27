@@ -6,6 +6,7 @@ import { Filter, Product, productrequest } from "./product-types";
 import CloudinaryImage from "../common/ImageUploader";
 import { Logger } from "winston";
 import mongoose from "mongoose";
+import logger from "../config/logger";
 
 export class ProductController {
     constructor(
@@ -133,6 +134,7 @@ export class ProductController {
                 searchTerm,
                 filter,
             );
+            logger.info("Products fetched successfully");
             return res.json({
                 products: products,
             });
