@@ -1,4 +1,4 @@
-import { NextFunction, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { ProductService } from "./product.service";
 import { validationResult } from "express-validator";
 import createHttpError from "http-errors";
@@ -117,10 +117,15 @@ export class ProductController {
             }
         }
     };
-    list = async (req: productrequest, res: Response, next: NextFunction) => {
+    list = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const products = await this.productService.listProducts();
-            res.json(products);
+            const { q, categoryId } = req.query;
+
+            const filter = {};
+
+            res.json({});
+            // const products = await this.productService.listProducts();
+            // res.json(products);
         } catch (err: any) {
             if (err instanceof Error) {
                 this.logger.error(err.message);

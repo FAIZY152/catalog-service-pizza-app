@@ -38,5 +38,11 @@ router.put(
     updateProductValidation,
     AsyncHandler(productControll.update),
 );
+router.get(
+    "/list",
+    Authenticate,
+    canAccess([Roles.ADMIN, Roles.MANAGER]),
+    AsyncHandler(productControll.list),
+);
 
 export default router;
