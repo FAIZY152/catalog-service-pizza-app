@@ -5,7 +5,6 @@ import createHttpError from "http-errors";
 import { Product, productrequest } from "./product-types";
 import CloudinaryImage from "../common/ImageUploader";
 import { Logger } from "winston";
-import { AuthRequest } from "../types";
 
 export class ProductController {
     constructor(
@@ -102,9 +101,6 @@ export class ProductController {
                 isPublish: isPublish, // optional if you send as text
             };
 
-            const tenate = (req as AuthRequest).auth;
-            console.log("tenate", tenate);
-
             const result = await this.productService.updateProduct(
                 productId,
                 updatedProduct as unknown as Product,
@@ -114,6 +110,17 @@ export class ProductController {
                 message: "Product created successfully",
                 id: result._id,
             });
+        } catch (err: any) {
+            if (err instanceof Error) {
+                this.logger.error(err.message);
+                next(createHttpError(500, err.message));
+            }
+        }
+    };
+    list = async (req: productrequest, res: Response, next: NextFunction) => {
+        try {
+            const products = await this.productService.listProducts();
+            res.json(products);
         } catch (err: any) {
             if (err instanceof Error) {
                 this.logger.error(err.message);
