@@ -134,11 +134,11 @@ export class ProductController {
                 searchTerm,
                 filter,
             );
-            logger.info("Products fetched successfully");
+            this.logger.info("Products fetched successfully");
             return res.json({
-                products: products,
+                products: products as Product[],
             });
-        } catch (err: any) {
+        } catch (err) {
             if (err instanceof Error) {
                 this.logger.error(err.message);
                 next(createHttpError(500, err.message));
