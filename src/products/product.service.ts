@@ -53,8 +53,15 @@ export class ProductService {
                 $unwind: "$category",
             },
         ]);
-        const result = await aggregate.exec();
-        return result as Product[];
-        // return await productModel.find();
+        // const result = await aggregate.exec();
+        // return result as Product[];
+        return productModel
+            .aggregatePaginate(aggregate, {
+                limit: 6,
+                page: 1,
+            })
+            .then((result) => {
+                return result.docs as Product[];
+            });
     }
 }
