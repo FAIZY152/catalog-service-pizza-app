@@ -123,6 +123,10 @@ export class ProductController {
             const { q, name, categoryId } = req.query;
 
             const filter: Filter = {};
+            const paginateQuery = {
+                page: Number(req.query.page) || 1,
+                limit: Number(req.query.limit) || 10,
+            };
             const searchTerm = (q || name) as string;
 
             if (categoryId && mongoose.isValidObjectId(categoryId as string))
@@ -132,6 +136,7 @@ export class ProductController {
             const products = await this.productService.listProducts(
                 searchTerm,
                 filter,
+                paginateQuery,
             );
             this.logger.info("Products fetched successfully");
             return res.json({

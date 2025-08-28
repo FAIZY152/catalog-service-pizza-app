@@ -1,6 +1,7 @@
 import { AggregatePaginateResult } from "mongoose";
-import { Filter, Product } from "./product-types";
+import { Filter, PaginateQuery, Product } from "./product-types";
 import productModel from "./product.model";
+import { PaginateLabels } from "./Constants";
 
 export class ProductService {
     async createProduct(product: Product) {
@@ -24,6 +25,7 @@ export class ProductService {
     async listProducts(
         q: string,
         filters: Filter,
+        paginateQuery: PaginateQuery,
     ): Promise<AggregatePaginateResult<any>> {
         const searchQuery = new RegExp(q, "i");
         const matchQuery = {
@@ -59,6 +61,9 @@ export class ProductService {
         ]);
         // const result = await aggregate.exec();
         // return result as Product[];
-        return productModel.aggregatePaginate(aggregate, {});
+        return productModel.aggregatePaginate(aggregate, {
+            ...paginateQuery,
+            customLabels: PaginateLabels,
+        });
     }
 }
